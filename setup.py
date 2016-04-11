@@ -1,4 +1,5 @@
 from setuptools import setup, find_packages
+from pip.req import parse_requirements
 import sys, os
 
 here = os.path.abspath(os.path.dirname(__file__))
@@ -6,7 +7,8 @@ README = open(os.path.join(here, 'Readme.md')).read()
 
 version = '0.1'
 
-install_requires = open(os.path.join(here, 'requirements.txt')).readlines()
+install_reqs = parse_requirements(os.path.join(here, 'requirements.txt'), session=False)
+reqs = [str(ir.req) for ir in install_reqs]
 
 setup(name='sql_kernel',
     version=version,
@@ -30,7 +32,7 @@ setup(name='sql_kernel',
     package_dir = {'': 'src'},
     include_package_data=True,
     zip_safe=False,
-    install_requires=install_requires,
+    install_requires=reqs,
 )
 
 from jupyter_client.kernelspec import install_kernel_spec
