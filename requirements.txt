@@ -1,5 +1,6 @@
 prettytable
-notebook>4.1
+notebook>=4.1
+jupyter_client
 sqlalchemy>=0.6.7
 sqlparse
 six
