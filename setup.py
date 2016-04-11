@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 from pip.req import parse_requirements
 import sys, os
 
-def setup():
+def run_setup():
   here = os.path.abspath(os.path.dirname(__file__))
   README = open(os.path.join(here, 'Readme.md')).read()
 
@@ -10,7 +10,6 @@ def setup():
 
   install_reqs = parse_requirements(os.path.join(here, 'requirements.txt'), session=False)
   reqs = [str(ir.req) for ir in install_reqs]
-
   setup(name='sql_kernel',
       version=version,
       description="SQL Kernel for Jupyter",
@@ -68,5 +67,5 @@ def register_kernel():
   user = '--user' in argv or not _is_root()
   install_my_kernel_spec(user=user)
 
-setup()
+run_setup()
 register_kernel()
