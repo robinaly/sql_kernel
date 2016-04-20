@@ -46,8 +46,7 @@ def register_kernel():
     "argv":[sys.executable,"-m","sql_kernel", "-f", "{connection_file}"],
     "display_name":"SQL Kernel",
     "language":"sql",
-    "codemirror_mode":"sql",
-    "env":{"PS1": "$"}
+    "codemirror_mode":"sql"
   }
 
   def install_my_kernel_spec(user=True):
