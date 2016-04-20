@@ -124,7 +124,7 @@ class ResultSet(list):
             return None
             
     def __str__(self, *arg, **kwarg):
-        return str(self.pretty or '')
+        return unicode(self.pretty or '')
         
     def __getitem__(self, key):
         """

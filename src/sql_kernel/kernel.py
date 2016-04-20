@@ -101,7 +101,7 @@ class SqlKernel(Kernel):
                  }
         try:
           result = run.run(connection.Connection.current, cmd['statement'], self, {})
-
+          print result._repr_html_()
           if not silent and result:
             data = { 
                      'text/plain': unicode(result), 
@@ -117,7 +117,9 @@ class SqlKernel(Kernel):
                  }
             
         except (Exception, ProgrammingError, OperationalError) as e:
-          err_txt = str(e)
+          import traceback, sys
+          type_, value_, traceback_ = sys.exc_info()          
+          err_txt = unicode(traceback.format_exc())
           remove_txt = '(sqlite3.OperationalError) '
           if err_txt.startswith(remove_txt):
             err_txt = err_txt[len(remove_txt):]
