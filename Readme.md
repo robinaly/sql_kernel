@@ -17,9 +17,10 @@ Afterwards, you can use standard SQL commands to fill the database with values a
 
 ```sql
 In [2]: CREATE TABLE X (firstname VARCHAR(20), lastname VARCHAR(20))
-In [3]: INSERT INTO X VALUES ("John", "Smith"), ("John", "Doe")
-In [4]: SELECT * FROM X
-Out[4]: 
+In [3]: INSERT INTO X VALUES ("John", "Smith")
+In [4]: INSERT INTO X VALUES ("John", "Doe")
+In [5]: SELECT * FROM X
+Out[5]: 
 +-----------+----------+
 | firstname | lastname |
 +-----------+----------+
