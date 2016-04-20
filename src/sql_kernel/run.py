@@ -122,8 +122,10 @@ class ResultSet(list):
             return result
         else:
             return None
+            
     def __str__(self, *arg, **kwarg):
         return str(self.pretty or '')
+        
     def __getitem__(self, key):
         """
         Access by integer (row position within result set)
@@ -147,6 +149,7 @@ class ResultSet(list):
         import pandas as pd
         frame = pd.DataFrame(self, columns=(self and self.keys) or [])
         return frame
+        
     def pie(self, key_word_sep=" ", title=None, **kwargs):
         """Generates a pylab pie chart from the result set.
 
@@ -268,8 +271,6 @@ def interpret_rowcount(rowcount):
 
 def run(conn, sql, config, user_namespace={}):
   for statement in sqlparse.split(sql):
-    if sql.strip().split()[0].lower() == 'begin':
-        raise Exception("ipython_sql does not support transactions")
     txt = sqlalchemy.sql.text(statement)
     result = conn.session.execute(txt, user_namespace)
     try:

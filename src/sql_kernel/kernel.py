@@ -55,12 +55,9 @@ class SqlKernel(Kernel):
     def __init__(self, **kwargs):
         Kernel.__init__(self, **kwargs)
         self.conn = None
-        # self._start_bash()
         
-        # for code in ['sqlite://', 'CREATE TABLE X (name VARCHAR(10))', 'INSERT INTO X ("name") VALUES ("tomas")']:
-        #   parsed = parse.parse(code, self)
-        #   conn = connection.Connection.get(parsed['connection'])
-        #   result = run.run(conn, parsed['sql'], self, {})
+        for code in ['sqlite://']:
+          connection.Connection.get(code)
 
     def do_execute(self, code, silent, store_history=True,
                    user_expressions=None, allow_stdin=False):
@@ -68,9 +65,9 @@ class SqlKernel(Kernel):
       Main method executing code
       '''
       cmd = parse(code, self)
-      if cmd['op'] == 'NOP':
+      if cmd['op'] == 'NOP': # empty line
         pass
-      elif cmd['op'] == 'CONNECT':
+      elif cmd['op'] == 'CONNECT': # connection statement
         try:
           connection.Connection.get(cmd['statement'])
         
@@ -92,8 +89,7 @@ class SqlKernel(Kernel):
                   'payload': [],
                   'user_expressions': {},
                  }
-      elif cmd['op'] == 'SQL': # SQL 
-        
+      elif cmd['op'] == 'SQL': # SQL Statement(s)
         if connection.Connection.current == None:
           # not yet connected
           stream_content = {'name': 'stderr', 'text': "Not connected yet" }
@@ -120,7 +116,7 @@ class SqlKernel(Kernel):
                   'user_expressions': {},
                  }
             
-        except (ProgrammingError, OperationalError) as e:
+        except (Exception, ProgrammingError, OperationalError) as e:
           err_txt = str(e)
           remove_txt = '(sqlite3.OperationalError) '
           if err_txt.startswith(remove_txt):
