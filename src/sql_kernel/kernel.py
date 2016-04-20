@@ -104,7 +104,7 @@ class SqlKernel(Kernel):
 
           if not silent and result:
             data = { 
-                     'text/plain': str(result), 
+                     'text/plain': unicode(result), 
                      'text/html': result._repr_html_() 
                    }
             stream_content = {'execution_count': self.execution_count, 'data': data, 'metadata': {} }
