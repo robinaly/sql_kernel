@@ -47,10 +47,10 @@ class SqlKernel(Kernel):
     autolimit = Int(0, config=True, help="Automatically limit the size of the returned result sets")
     style = Unicode('DEFAULT', config=True, help="Set the table printing style to any of prettytable's defined styles (currently DEFAULT, MSWORD_FRIENDLY, PLAIN_COLUMNS, RANDOM)")
     short_errors = Bool(True, config=True, help="Don't display the full traceback on SQL Programming Error")
-    displaylimit = Int(0, config=True, help="Automatically limit the number of rows displayed (full result set is still stored)")
+    displaylimit = Int(10, config=True, help="Automatically limit the number of rows displayed (full result set is still stored)")
     autopandas = Bool(False, config=True, help="Return Pandas DataFrames instead of regular result sets")
     column_local_vars = Bool(False, config=True, help="Return data into local variables from column names")
-    feedback = Bool(False, config=True, help="Print number of rows affected by DML")
+    feedback = Bool(True, config=True, help="Print number of rows affected by DML")
 
     def __init__(self, **kwargs):
         Kernel.__init__(self, **kwargs)
@@ -101,15 +101,13 @@ class SqlKernel(Kernel):
                  }
         try:
           result = run.run(connection.Connection.current, cmd['statement'], self, {})
-          print result._repr_html_()
-          if not silent and result:
+          if not silent and result != None:
             data = { 
                      'text/plain': unicode(result), 
-                     'text/html': result._repr_html_() 
+                     'text/html': result._repr_html_()
                    }
-            stream_content = {'execution_count': self.execution_count, 'data': data, 'metadata': {} }
+            stream_content = {'execution_count': self.execution_count, 'data': data, 'metadata': {'resultmeta': result.metadata()} }
             self.send_response(self.iopub_socket, 'execute_result', stream_content)
-          
           return {'status': 'ok',
                   'execution_count': self.execution_count,
                   'payload': [],
