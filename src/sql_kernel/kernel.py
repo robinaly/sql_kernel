@@ -117,10 +117,11 @@ class SqlKernel(Kernel):
         except (Exception, ProgrammingError, OperationalError) as e:
           import traceback, sys
           type_, value_, traceback_ = sys.exc_info()          
-          err_txt = unicode(traceback.format_exc())
+          #err_txt = traceback.format_exc()
+          err_txt = unicode(repr(e))
           remove_txt = '(sqlite3.OperationalError) '
-          if err_txt.startswith(remove_txt):
-            err_txt = err_txt[len(remove_txt):]
+          if remove_txt in err_txt:
+            err_txt = err_txt[err_txt.index(remove_txt)+len(remove_txt):]
           stream_content = {'name': 'stderr', 'text': err_txt }
           self.send_response(self.iopub_socket, 'stream', stream_content)
       
