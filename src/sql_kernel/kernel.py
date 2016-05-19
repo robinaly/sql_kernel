@@ -65,8 +65,13 @@ class SqlKernel(Kernel):
       Main method executing code
       '''
       cmd = parse(code, self)
+      self.execution_count += 1
       if cmd['op'] == 'NOP': # empty line
-        pass
+        return {'status': 'ok',
+                'execution_count': self.execution_count,
+                'payload': [],
+                'user_expressions': {},
+               }
       elif cmd['op'] == 'CONNECT': # connection statement
         try:
           connection.Connection.get(cmd['statement'])
